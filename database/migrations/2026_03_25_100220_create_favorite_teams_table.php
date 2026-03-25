@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained(User::TABLE)->onDelete('cascade');
             $table->unsignedSmallInteger('favorite_team_id');
             $table->string('favorite_team_name', 64);
-            $table->string('favorite_team_crest', 128);
-            $table->string('favorite_team_country', 64);
+            $table->string('favorite_team_crest', 128)->nullable();
+            $table->string('favorite_team_country', 64)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
