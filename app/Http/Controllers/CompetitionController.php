@@ -30,8 +30,13 @@ class CompetitionController extends Controller
 
         $standings = $data['standings'][0]['table'] ?? [];
         $competition = $data['competition'] ?? [];
+        $area = $data['area'] ?? [];
 
-        return view('competitions.standings', compact('standings', 'competition'));
+        $favoriteIds = auth()->check()
+            ? auth()->user()->allFavoriteTeams()->pluck('favorite_team_id')->toArray()
+            : []; // if team is favorite, add id to array - and in blade have not 'favorite' button
+
+        return view('competitions.standings', compact('standings', 'competition', 'area', 'favoriteIds'));
     }
 
     /**

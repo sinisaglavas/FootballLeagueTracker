@@ -53,6 +53,7 @@
                                 <th class="px-3 py-2 border">Date</th>
                                 <th class="px-3 py-2 border">Home Team</th>
                                 <th class="px-3 py-2 border">Away Team</th>
+                                <th class="px-3 py-2 border">Half Time</th>
                                 <th class="px-3 py-2 border">Score</th>
                                 <th class="px-3 py-2 border">Status</th>
                                 <th class="px-3 py-2 border">Matchday</th>
@@ -88,29 +89,33 @@
                                         @endif
                                     </td>
                                     <td class="px-3 py-2 border">
+                                        {{ $match['score']['halfTime']['home'] ?? '-' }} :
+                                        {{ $match['score']['halfTime']['away'] ?? '-' }}
+                                    </td>
+                                    <td class="px-3 py-2 border">
                                         {{ $match['score']['fullTime']['home'] ?? '-' }} :
                                         {{ $match['score']['fullTime']['away'] ?? '-' }}
                                     </td>
                                     <td class="px-3 py-2 border">
                                         @php
-                                            $classes = match($status) {
-                                                'LIVE', 'IN_PLAY' => 'bg-green-100 text-green-800',
-                                                'PAUSED' => 'bg-yellow-100 text-yellow-800',
-                                                'FINISHED' => 'bg-gray-200 text-gray-800',
-                                                'SCHEDULED', 'TIMED' => 'bg-blue-100 text-blue-800',
-                                                'POSTPONED', 'CANCELED' => 'bg-red-100 text-red-800',
-                                                default => 'bg-gray-100 text-gray-700'
-                                            };
+                                        $classes = match ($status) {
+                                        'LIVE', 'IN_PLAY' => 'bg-green-100 text-green-800',
+                                        'PAUSED' => 'bg-yellow-100 text-yellow-800',
+                                        'FINISHED' => 'bg-gray-300 text-gray-800',
+                                        'SCHEDULED', 'TIMED' => 'bg-blue-100 text-blue-800',
+                                        'POSTPONED', 'CANCELED' => 'bg-red-100 text-red-800',
+                                        default => 'bg-gray-100 text-gray-700',
+                                        };
 
-                                            $label = match($status) {
-                                                'LIVE', 'IN_PLAY' => 'LIVE',
-                                                'PAUSED' => 'PAUSED',
-                                                'FINISHED' => 'FINISHED',
-                                                'SCHEDULED', 'TIMED' => 'SCHEDULED',
-                                                'POSTPONED' => 'POSTPONED',
-                                                'CANCELED' => 'CANCELED',
-                                                default => $status
-                                            };
+                                        $label = match($status) {
+                                            'LIVE', 'IN_PLAY' => 'LIVE',
+                                             'PAUSED' => 'PAUSED',
+                                             'FINISHED' => 'FINISHED',
+                                             'SCHEDULED', 'TIMED' => 'SCHEDULED',
+                                             'POSTPONED' => 'POSTPONED',
+                                             'CANCELED' => 'CANCELED',
+                                             default => $status
+                                        };
                                         @endphp
 
                                         <span class="px-2 py-1 text-xs font-semibold rounded {{ $classes }}">

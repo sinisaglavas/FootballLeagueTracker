@@ -39,14 +39,44 @@
                                             {{ $row['position'] }}
                                         </td>
 
-                                        <td class="border px-2 py-1 text-left flex items-center gap-2">
-                                            @if(isset($row['team']['crest']))
-                                                <img src="{{ $row['team']['crest'] }}"
-                                                     alt="logo"
-                                                     class="w-6 h-6">
-                                            @endif
+                                        <td class="border px-2 py-1 text-left">
+                                            <div class="flex items-center justify-between gap-2">
 
-                                                <a href="{{ route('competitions.show', $row['team']['id']) }}" class="text-blue-600 hover:underline">{{ $row['team']['name'] }}</a>
+                                                @if($row['team']['id'] === null)
+                                                    <p>-</p>
+                                                @else
+                                                    <a href="{{ route('competitions.show', $row['team']['id']) }}" class="text-blue-600 hover:underline">{{ $row['team']['name'] }}
+                                                        @if(isset($row['team']['crest']))
+                                                            <img src="{{ $row['team']['crest'] }}"
+                                                                 alt="logo"
+                                                                 class="w-6 h-6">
+                                                        @endif
+                                                    </a>
+
+                                                    <!-- FAVORITE BUTTON -->
+                                                    @auth
+                                                        @if(in_array($row['team']['id'], $favoriteIds))
+                                                            <span class="text-green-600 text-xs font-bold">✔ Favorited</span>
+                                                        @else
+                                                            <!-- BUTTON -->
+                                                            <form method="POST" action="{{ route('favorite-teams.store') }}">
+                                                                @csrf
+
+                                                                <input type="hidden" name="favorite_team_id" value="{{ $row['team']['id'] }}">
+                                                                <input type="hidden" name="favorite_team_name" value="{{ $row['team']['name'] }}">
+                                                                <input type="hidden" name="favorite_team_crest" value="{{ $row['team']['crest'] ?? '' }}">
+                                                                <input type="hidden" name="favorite_team_country" value="{{ $area['name'] ?? '' }}">
+
+                                                                <button type="submit"
+                                                                        class="text-xs px-2 py-1 bg-yellow-200 hover:bg-yellow-400 rounded font-semibold">
+                                                                    ⭐ Favorite
+                                                                </button>
+                                                            </form>
+                                                        @endif
+
+                                                    @endauth
+                                                @endif
+                                            </div>
                                         </td>
 
                                         <td class="border px-2 py-1">
